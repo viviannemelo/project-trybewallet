@@ -1,16 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { userAction } from '../redux/actions/index';
-
-validateEmail = (input) => {
-  const result = /\S+@\S+\.\S+/;
-  return result.test(input);
-};
-
-validatePassword = (input) => {
-  const minLengthPassword = 5;
-  return input.length > minLengthPassword;
-};
 
 class Login extends React.Component {
   state = {
@@ -20,13 +11,9 @@ class Login extends React.Component {
   };
 
   handleClick = () => {
-    const { dispatch, history } = this.props;
     const { email } = this.state;
+    const { dispatch, history } = this.props;
     dispatch(userAction(email));
-    this.setState({
-      email: '',
-      password: '',
-    });
     history.push('/carteira');
   };
 
@@ -36,13 +23,15 @@ class Login extends React.Component {
       [name]: value,
     }, () => {
       const { email, password } = this.state;
-      this.setState({ isButtonValid:
-        (
-          validateEmail(email) && validatePassword(password)
-        ),
+      const regex = /\S+@\S+\.\S+/;
+      const minLengthPassword = 5;
+      const validateEmail = email.match(regex);
+      const validatePassword = password.length > minLengthPassword;
+      const validateInput = validateEmail && validatePassword;
+      this.setState({
+        isButtonValid: validateInput,
       });
     });
-    return value;
   };
 
   render() {
@@ -58,7 +47,7 @@ class Login extends React.Component {
           onChange={ this.handleChange }
         />
         <input
-          type="text"
+          type="password"
           data-testid="password-input"
           value={ password }
           name="password"
@@ -83,4 +72,4 @@ Login.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-export default Login;
+export default connect()(Login);
