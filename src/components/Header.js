@@ -16,12 +16,12 @@ class Header extends Component {
     );
   }
 }
-
 Header.propTypes = {
   email: PropTypes.string,
 }.isRequired;
 
 const mapStateToProps = (state) => ({
+  ...state.user,
   email: state.user.email,
 });
 

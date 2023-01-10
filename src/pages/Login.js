@@ -23,9 +23,9 @@ class Login extends React.Component {
       [name]: value,
     }, () => {
       const { email, password } = this.state;
-      const regex = /\S+@\S+\.\S+/;
+      const regexEmail = /\S+@\S+\.\S+/;
       const minLengthPassword = 5;
-      const validateEmail = email.match(regex);
+      const validateEmail = email.match(regexEmail);
       const validatePassword = password.length > minLengthPassword;
       const validateInput = validateEmail && validatePassword;
       this.setState({
