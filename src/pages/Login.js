@@ -16,6 +16,7 @@ class Login extends React.Component {
     dispatch(userAction(email));
     history.push('/carteira');
   };
+  // Não ta salvando no estado
 
   handleChange = (event) => {
     const { value, name } = event.target;
