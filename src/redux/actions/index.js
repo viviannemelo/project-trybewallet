@@ -1,24 +1,24 @@
-import fetchCurrencies from '../../services/walletApi';
+export const EMAIL_ACTION = 'EMAIL_ACTION';
+export const WALLET_ACTION = 'WALLET_ACTION';
+export const EXPENSE_ACTION = 'EXPENSE_ACTION';
+export const DELETE_ACTION = 'DELETE_ACTION';
 
-export const EMAIL_USER = 'EMAIL_USER';
-export const CURRENCIES = 'CURRENCIES';
-
-export const userAction = (email) => ({
-  type: EMAIL_USER,
+export const emailAction = (email) => ({
+  type: EMAIL_ACTION,
   payload: email,
 });
 
-export const getCurrencies = () => async (dispatch) => {
-  try {
-    const response = await fetchCurrencies();
-    const currencies = Object.keys(response);
-    currencies.splice(currencies.indexOf('USDT'), 1);
+export const walletAction = (currencies) => ({
+  type: WALLET_ACTION,
+  payload: currencies,
+});
 
-    dispatch({
-      type: CURRENCIES,
-      payload: currencies,
-    });
-  } catch (error) {
-    dispatch();
-  }
-};
+export const expenseAction = (expense) => ({
+  type: EXPENSE_ACTION,
+  payload: expense,
+});
+
+export const deleteAction = (expenseDelete) => ({
+  type: DELETE_ACTION,
+  payload: expenseDelete,
+});

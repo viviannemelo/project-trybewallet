@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import './index.css';
 import { BrowserRouter } from 'react-router-dom';
-import * as serviceWorker from './serviceWorker';
+import './index.css';
+import { Provider } from 'react-redux';
 import App from './App';
 import store from './redux/store';
+import * as serviceWorker from './serviceWorker';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
@@ -15,6 +15,7 @@ ReactDOM
         <App />
       </Provider>
     </BrowserRouter>,
+
   );
 
 serviceWorker.unregister();

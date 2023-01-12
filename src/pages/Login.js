@@ -1,63 +1,71 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { userAction } from '../redux/actions/index';
+import PropTypes from 'prop-types';
+import { emailAction } from '../redux/actions';
 
 class Login extends React.Component {
   state = {
     email: '',
     password: '',
-    isButtonValid: false,
+    isSaveButtonDisabled: true,
   };
 
-  handleClick = () => {
-    const { email } = this.state;
-    const { dispatch, history } = this.props;
-    dispatch(userAction(email));
-    history.push('/carteira');
-  };
-  // Não ta salvando no estado
-
-  handleChange = (event) => {
-    const { value, name } = event.target;
+  handleChange = ({ target }) => {
+    const { name, value } = target;
     this.setState({
       [name]: value,
-    }, () => {
-      const { email, password } = this.state;
-      const regexEmail = /\S+@\S+\.\S+/;
-      const minLengthPassword = 5;
-      const validateEmail = email.match(regexEmail);
-      const validatePassword = password.length > minLengthPassword;
-      const validateInput = validateEmail && validatePassword;
+    }, () => this.saveButtonDisabled());
+  };
+
+  saveButtonDisabled = () => {
+    const emailRegex = /\S+@\S+\.\S+/;
+    const passwordLength = 6;
+
+    const { email, password } = this.state;
+    const validateEmail = emailRegex.test(email);
+    if (validateEmail && password.length >= passwordLength) {
       this.setState({
-        isButtonValid: validateInput,
+        isSaveButtonDisabled: false,
       });
-    });
+    } else {
+      this.setState({
+        isSaveButtonDisabled: true,
+      });
+    }
+  };
+
+  onSaveButtonClick = () => {
+    const { email } = this.state;
+    const { history, dispatch } = this.props;
+    dispatch(emailAction(email));
+    history.push('/carteira');
   };
 
   render() {
-    const { email, password, isButtonValid } = this.state;
+    const { email, password, isSaveButtonDisabled } = this.state;
     return (
       <form>
-        <h1>Login</h1>
         <input
-          type="text"
-          value={ email }
-          name="email"
           data-testid="email-input"
+          placeholder="Email"
+          type="email"
+          name="email"
+          value={ email }
           onChange={ this.handleChange }
         />
         <input
-          type="password"
           data-testid="password-input"
-          value={ password }
+          placeholder="Senha"
+          type="password"
           name="password"
+          value={ password }
           onChange={ this.handleChange }
         />
         <button
           type="button"
-          onClick={ this.handleClick }
-          disabled={ !isButtonValid }
+          name="button"
+          disabled={ isSaveButtonDisabled }
+          onClick={ this.onSaveButtonClick }
         >
           Entrar
         </button>

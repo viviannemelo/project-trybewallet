@@ -1,13 +1,12 @@
-import { EMAIL_USER } from '../actions/index';
+import { EMAIL_ACTION } from '../actions';
 
-const INITIAL_STATE = {
-  email: '',
-};
+const INITIAL_STATE = { email: '' };
 
 const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case EMAIL_USER:
+  case EMAIL_ACTION:
     return {
+      ...state,
       email: action.payload,
     };
   default:
